@@ -37,4 +37,28 @@ public class MouseClickTest extends BaseTestChrome {
 
         Assertions.assertTrue(driver.getCurrentUrl().contains("resultPage.html"));
     }
+
+    @Test
+    public void rightClick() {
+        driver.get("https://www.selenium.dev/selenium/web/mouse_interaction.html");
+
+        WebElement clickable = driver.findElement(By.id("clickable"));
+        new Actions(driver)
+                .contextClick(clickable)
+                .perform();
+
+        Assertions.assertEquals("context-clicked", driver.findElement(By.id("click-status")).getText());
+    }
+
+    @Test
+    public void doubleClick() {
+        driver.get("https://www.selenium.dev/selenium/web/mouse_interaction.html");
+
+        WebElement clickable = driver.findElement(By.id("clickable"));
+        new Actions(driver)
+                .doubleClick(clickable)
+                .perform();
+
+        Assertions.assertEquals("double-clicked", driver.findElement(By.id("click-status")).getText());
+    }
 }
