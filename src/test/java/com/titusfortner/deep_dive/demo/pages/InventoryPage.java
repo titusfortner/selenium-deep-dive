@@ -3,25 +3,26 @@ package test.java.com.titusfortner.deep_dive.demo.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import test.java.com.titusfortner.deep_dive.demo.elements.Element;
 
 import java.util.function.Function;
 
 public class InventoryPage extends BasePage {
     public static final String URL = "https://www.saucedemo.com/inventory.html";
 
-    private final By item1Link = By.id("item_1_title_link");
-    private final By shoppingCartLink = By.className("shopping_cart_link");
+    private final Element item1Link = new Element(driver, By.id("item_1_title_link"));
+    private final Element shoppingCartLink = new Element(driver, By.className("shopping_cart_link"));
 
     public InventoryPage(WebDriver driver) {
         super(driver);
     }
 
     public void viewBoltTShirtProduct() {
-        click(item1Link);
+        item1Link.click();
     }
 
     public void goToCart() {
-        click(shoppingCartLink);
+        shoppingCartLink.click();
     }
 
     public void addItemSuccessfully(Product product) {

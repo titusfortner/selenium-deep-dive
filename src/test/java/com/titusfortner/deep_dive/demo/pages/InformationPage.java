@@ -3,20 +3,20 @@ package test.java.com.titusfortner.deep_dive.demo.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import test.java.com.titusfortner.deep_dive.demo.data.Person;
+import test.java.com.titusfortner.deep_dive.demo.elements.Element;
+import test.java.com.titusfortner.deep_dive.demo.elements.ElementList;
 
-import java.util.List;
 import java.util.function.Function;
 
 public class InformationPage extends BasePage {
     public static final String URL = "https://www.saucedemo.com/checkout-step-one.html";
 
-    private final By firstNameElement = By.cssSelector("input[data-test='firstName']");
-    private final By lastNameElement = By.cssSelector("input[data-test='lastName']");
-    private final By postalCodeElement = By.cssSelector("input[data-test='postalCode']");
-    private final By continueButton = By.cssSelector("input[data-test='continue']");
-    private final By errorElement = By.cssSelector("[data-test=error]");
+    private final Element firstNameElement = new Element(driver, By.cssSelector("input[data-test='firstName']"));
+    private final Element lastNameElement = new Element(driver, By.cssSelector("input[data-test='lastName']"));
+    private final Element postalCodeElement = new Element(driver, By.cssSelector("input[data-test='postalCode']"));
+    private final Element continueButton = new Element(driver, By.cssSelector("input[data-test='continue']"));
+    private final ElementList errorElements = new ElementList(driver, By.cssSelector("[data-test=error]"));
 
     public InformationPage(WebDriver driver) {
         super(driver);
@@ -27,16 +27,15 @@ public class InformationPage extends BasePage {
     }
 
     public void addInformationSuccessfully(Person person) {
-        sendKeys(firstNameElement, person.getFirstName());
-        sendKeys(lastNameElement, person.getLastName());
-        sendKeys(postalCodeElement, person.getPostalCode());
-        click(continueButton);
+        firstNameElement.sendKeys(person.getFirstName());
+        lastNameElement.sendKeys(person.getLastName());
+        postalCodeElement.sendKeys(person.getPostalCode());
+        continueButton.click();
 
         try {
             wait.until((Function<WebDriver, Object>) driver -> !URL.equals(driver.getCurrentUrl()));
         } catch (TimeoutException ex) {
-            List<WebElement> errors = driver.findElements(errorElement);
-            String additional = errors.isEmpty() ? "" : " found error: " + errors.get(0).getText();
+            String additional = errorElements.isEmpty() ? "" : " found error: " + errorElements.getFirst().getText();
             throw new PageValidationException("Information not submitted;" + additional);
         }
     }

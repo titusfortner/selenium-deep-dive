@@ -3,27 +3,26 @@ package test.java.com.titusfortner.deep_dive.demo.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import test.java.com.titusfortner.deep_dive.demo.elements.Element;
+import test.java.com.titusfortner.deep_dive.demo.elements.ElementList;
 
-import java.util.List;
 import java.util.function.Function;
 
 public class HeaderSection extends BasePage {
-    private final By menuButton = By.id("react-burger-menu-btn");
-    private final By logoutLink = By.id("logout_sidebar_link");
-    private final By shoppingCartBadge = By.className("shopping_cart_badge");
+    private final Element menuButton = new Element(driver, By.id("react-burger-menu-btn"));
+    private final Element logoutLink = new Element(driver, By.id("logout_sidebar_link"));
+    private final ElementList shoppingCartItems = new ElementList(driver, By.className("shopping_cart_badge"));
 
     public HeaderSection(WebDriver driver) {
         super(driver);
     }
 
     public Integer getNumberItemsInCart() {
-        List<WebElement> cartNumberElements = driver.findElements(shoppingCartBadge);
-        if (cartNumberElements.isEmpty()) {
+        shoppingCartItems.reset();
+        if (shoppingCartItems.isEmpty()) {
             return 0;
         } else {
-            return Integer.valueOf(cartNumberElements.get(0).getText());
+            return Integer.valueOf(shoppingCartItems.getFirst().getText());
         }
     }
 
@@ -42,7 +41,7 @@ public class HeaderSection extends BasePage {
     }
 
     public void logOut() {
-        click(menuButton);
-        click(logoutLink);
+        menuButton.click();
+        logoutLink.click();
     }
 }
