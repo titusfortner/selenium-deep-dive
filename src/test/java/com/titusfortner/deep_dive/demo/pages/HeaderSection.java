@@ -42,13 +42,7 @@ public class HeaderSection extends BasePage {
     }
 
     public void logOut() {
-        driver.findElement(menuButton).click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        driver.findElement(logoutLink).click();
+        click(menuButton);
+        click(logoutLink);
     }
 }
