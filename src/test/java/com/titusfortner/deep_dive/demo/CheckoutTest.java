@@ -20,12 +20,12 @@ public class CheckoutTest extends BaseTestChrome {
 
     public void login() {
         HomePage homePage = HomePage.visit(driver);
-        homePage.login("standard_user", "secret_sauce");
+        homePage.loginSuccessfully("standard_user", "secret_sauce");
     }
 
     public void goToCheckoutWithItem() {
         InventoryPage inventoryPage = new InventoryPage(driver);
-        inventoryPage.addItem(Product.ONESIE);
+        inventoryPage.addItemSuccessfully(Product.ONESIE);
         inventoryPage.goToCart();
         CartPage cartPage = new CartPage(driver);
         cartPage.checkout();
@@ -37,10 +37,9 @@ public class CheckoutTest extends BaseTestChrome {
         goToCheckoutWithItem();
         InformationPage informationPage = new InformationPage(driver);
 
-        informationPage.addInformation("Luke", "Perry", "90210");
-
-        CheckoutPage checkoutPage = new CheckoutPage(driver);
-        Assertions.assertTrue(checkoutPage.isOnPage(),"Information Submission Unsuccessful");
+        Assertions.assertDoesNotThrow(() -> {
+            informationPage.addInformationSuccessfully("Luke", "Perry", "90210");
+        });
     }
 
     @Test
@@ -48,13 +47,8 @@ public class CheckoutTest extends BaseTestChrome {
         login();
         goToCheckoutWithItem();
         InformationPage informationPage = new InformationPage(driver);
-        informationPage.addInformation("Luke", "Perry", "90210");
+        informationPage.addInformationSuccessfully("Luke", "Perry", "90210");
 
-        CheckoutPage checkoutPage = new CheckoutPage(driver);
-        checkoutPage.finish();
-
-        FinishPage finish = new FinishPage(driver);
-        Assertions.assertTrue(finish.isOnPage());
-        Assertions.assertTrue(finish.isComplete());
+        Assertions.assertDoesNotThrow(new CheckoutPage(driver)::finishSuccessfully);
     }
 }

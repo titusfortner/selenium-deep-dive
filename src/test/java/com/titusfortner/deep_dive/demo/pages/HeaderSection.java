@@ -1,11 +1,13 @@
 package test.java.com.titusfortner.deep_dive.demo.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class HeaderSection extends BasePage {
     private final By menuButton = By.id("react-burger-menu-btn");
@@ -13,7 +15,7 @@ public class HeaderSection extends BasePage {
     private final By shoppingCartBadge = By.className("shopping_cart_badge");
 
     public HeaderSection(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public Integer getNumberItemsInCart() {
@@ -22,6 +24,20 @@ public class HeaderSection extends BasePage {
             return 0;
         } else {
             return Integer.valueOf(cartNumberElements.get(0).getText());
+        }
+    }
+
+    public boolean isLoggedIn() {
+        return InventoryPage.URL.equals(driver.getCurrentUrl());
+    }
+
+    public void logOutSuccessfully() {
+        logOut();
+
+        try {
+            wait.until((Function<WebDriver, Object>) driver -> !isLoggedIn());
+        } catch (TimeoutException ex) {
+            throw new PageValidationException("User is still logged in;");
         }
     }
 

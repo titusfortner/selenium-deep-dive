@@ -1,7 +1,12 @@
 package test.java.com.titusfortner.deep_dive.demo.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+import java.util.function.Function;
 
 public class HomePage extends BasePage {
     public static final String URL = "https://www.saucedemo.com/";
@@ -18,10 +23,33 @@ public class HomePage extends BasePage {
     }
 
     public HomePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    public void login(String username, String password) {
+    public void loginUnsuccessfully(String username, String password) {
+        login(username, password);
+
+        try {
+            wait.until((Function<WebDriver, Object>) driver -> !driver.findElements(errorElement).isEmpty());
+        } catch (TimeoutException ex) {
+            String url = driver.getCurrentUrl();
+            throw new PageValidationException("Expected login errors, but none were found; current URL: " + url);
+        }
+    }
+
+    public void loginSuccessfully(String username, String password) {
+        login(username, password);
+
+        try {
+            wait.until((Function<WebDriver, Object>) driver -> !URL.equals(driver.getCurrentUrl()));
+        } catch (TimeoutException ex) {
+            List<WebElement> errors = driver.findElements(errorElement);
+            String additional = errors.isEmpty() ? "" : " found error: " + errors.get(0).getText();
+            throw new PageValidationException("User is not logged in;" + additional);
+        }
+    }
+
+    private void login(String username, String password) {
         driver.findElement(usernameTextfield).sendKeys(username);
         driver.findElement(passwordTextfield).sendKeys(password);
         driver.findElement(loginButton).click();
@@ -29,9 +57,5 @@ public class HomePage extends BasePage {
 
     public boolean isLockedOut() {
         return driver.findElement(errorElement).getText().contains("Sorry, this user has been locked out");
-    }
-
-    public boolean isOnPage() {
-        return URL.equals(driver.getCurrentUrl());
     }
 }

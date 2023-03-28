@@ -9,11 +9,7 @@ public class FinishPage extends BasePage {
     private final By completeText = By.className("complete-text");
 
     public FinishPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    public boolean isOnPage() {
-        return URL.equals(driver.getCurrentUrl());
+        super(driver);
     }
 
     public boolean isComplete() {
