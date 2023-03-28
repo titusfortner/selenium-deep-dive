@@ -3,9 +3,7 @@ package test.java.com.titusfortner.deep_dive.demo.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class InformationPage {
-    private final WebDriver driver;
-
+public class InformationPage extends BasePage {
     private final By firstNameElement = By.cssSelector("input[data-test='firstName']");
     private final By lastNameElement = By.cssSelector("input[data-test='lastName']");
     private final By postalCodeElement = By.cssSelector("input[data-test='postalCode']");

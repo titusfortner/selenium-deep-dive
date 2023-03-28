@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import test.java.com.titusfortner.deep_dive.BaseTestChrome;
+import test.java.com.titusfortner.deep_dive.demo.pages.HeaderSection;
 import test.java.com.titusfortner.deep_dive.demo.pages.HomePage;
 import test.java.com.titusfortner.deep_dive.demo.pages.InventoryPage;
 
@@ -37,7 +38,7 @@ public class AuthenticationTest extends BaseTestChrome {
         HomePage homePage = HomePage.visit(driver);
         homePage.login("standard_user", "secret_sauce");
 
-        new InventoryPage(driver).logOut();
+        new HeaderSection(driver).logOut();
 
         Assertions.assertTrue(homePage.isOnPage(), "Logout Not Successful");
     }

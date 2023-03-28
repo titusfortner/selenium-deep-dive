@@ -3,9 +3,8 @@ package test.java.com.titusfortner.deep_dive.demo.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class HomePage {
+public class HomePage extends BasePage {
     public static final String URL = "https://www.saucedemo.com/";
-    private final WebDriver driver;
 
     private final By usernameTextfield = By.cssSelector("input[data-test='username']");
     private final By passwordTextfield = By.cssSelector("input[data-test='password']");
