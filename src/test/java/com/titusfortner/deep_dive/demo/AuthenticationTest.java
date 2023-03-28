@@ -3,9 +3,9 @@ package test.java.com.titusfortner.deep_dive.demo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import test.java.com.titusfortner.deep_dive.BaseTestChrome;
+import test.java.com.titusfortner.deep_dive.demo.pages.HomePage;
+import test.java.com.titusfortner.deep_dive.demo.pages.InventoryPage;
 
 public class AuthenticationTest extends BaseTestChrome {
     @BeforeEach
@@ -15,43 +15,29 @@ public class AuthenticationTest extends BaseTestChrome {
 
     @Test
     public void signInUnsuccessful() {
-        driver.get("https://www.saucedemo.com/");
+        HomePage homePage = new HomePage(driver);
 
-        driver.findElement(By.cssSelector("input[data-test='username']")).sendKeys("locked_out_user");
-        driver.findElement(By.cssSelector("input[data-test='password']")).sendKeys("secret_sauce");
-        driver.findElement(By.cssSelector("input[data-test='login-button']")).click();
+        homePage.login("locked_out_user", "secret_sauce");
 
-        WebElement errorElement = driver.findElement(By.cssSelector("[data-test='error']"));
-        Assertions.assertTrue(errorElement.getText().contains("Sorry, this user has been locked out"),
-                "Error Not Found");
+        Assertions.assertTrue(homePage.isLockedOut(), "Error Not Found");
     }
 
     @Test
     public void signInSuccessful() {
-        driver.get("https://www.saucedemo.com/");
+        HomePage homePage = new HomePage(driver);
 
-        driver.findElement(By.cssSelector("input[data-test='username']")).sendKeys("standard_user");
-        driver.findElement(By.cssSelector("input[data-test='password']")).sendKeys("secret_sauce");
-        driver.findElement(By.cssSelector("input[data-test='login-button']")).click();
+        InventoryPage inventoryPage = homePage.login("standard_user", "secret_sauce");
 
-        Assertions.assertEquals("https://www.saucedemo.com/inventory.html",
-                driver.getCurrentUrl(),
-                "Login Not Successful");
+        Assertions.assertTrue(inventoryPage.isOnPage(), "Login Not Successful");
     }
 
     @Test
     public void logout() throws InterruptedException {
-        driver.get("https://www.saucedemo.com/");
-        driver.findElement(By.cssSelector("input[data-test='username']")).sendKeys("standard_user");
-        driver.findElement(By.cssSelector("input[data-test='password']")).sendKeys("secret_sauce");
-        driver.findElement(By.cssSelector("input[data-test='login-button']")).click();
-        driver.findElement(By.id("react-burger-menu-btn")).click();
-        Thread.sleep(1000);
+        HomePage homePage = new HomePage(driver);
+        InventoryPage inventoryPage = homePage.login("standard_user", "secret_sauce");
 
-        driver.findElement(By.id("logout_sidebar_link")).click();
+        inventoryPage.logOut();
 
-        Assertions.assertEquals("https://www.saucedemo.com/",
-                driver.getCurrentUrl(),
-                "Logout Not Successful");
+        Assertions.assertTrue(homePage.isOnPage(), "Logout Not Successful");
     }
 }

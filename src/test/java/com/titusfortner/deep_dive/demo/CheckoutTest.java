@@ -3,8 +3,14 @@ package test.java.com.titusfortner.deep_dive.demo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import test.java.com.titusfortner.deep_dive.BaseTestChrome;
+import test.java.com.titusfortner.deep_dive.demo.pages.CartPage;
+import test.java.com.titusfortner.deep_dive.demo.pages.CheckoutPage;
+import test.java.com.titusfortner.deep_dive.demo.pages.FinishPage;
+import test.java.com.titusfortner.deep_dive.demo.pages.HomePage;
+import test.java.com.titusfortner.deep_dive.demo.pages.InformationPage;
+import test.java.com.titusfortner.deep_dive.demo.pages.InventoryPage;
+import test.java.com.titusfortner.deep_dive.demo.pages.Product;
 
 public class CheckoutTest extends BaseTestChrome {
     @BeforeEach
@@ -12,45 +18,37 @@ public class CheckoutTest extends BaseTestChrome {
         startDriver();
     }
 
+    public InventoryPage login() {
+        HomePage homePage = new HomePage(driver);
+        return homePage.login("standard_user", "secret_sauce");
+    }
+
+    public InformationPage goToCheckoutWithItem() {
+        InventoryPage inventoryPage = new InventoryPage(driver);
+        inventoryPage.addItem(Product.ONESIE);
+        CartPage cartPage = inventoryPage.goToCart();
+        return cartPage.checkout();
+    }
+
     @Test
     public void goodInfo() {
-        driver.get("https://www.saucedemo.com/");
-        driver.findElement(By.cssSelector("input[data-test='username']")).sendKeys("standard_user");
-        driver.findElement(By.cssSelector("input[data-test='password']")).sendKeys("secret_sauce");
-        driver.findElement(By.cssSelector("input[data-test='login-button']")).click();
-        driver.findElement(By.cssSelector("button[data-test='add-to-cart-sauce-labs-onesie']")).click();
-        driver.findElement(By.className("shopping_cart_link")).click();
-        driver.findElement(By.cssSelector("button[data-test='checkout']")).click();
+        login();
+        InformationPage informationPage = goToCheckoutWithItem();
 
-        driver.findElement(By.cssSelector("input[data-test='firstName']")).sendKeys("Luke");
-        driver.findElement(By.cssSelector("input[data-test='lastName']")).sendKeys("Perry");
-        driver.findElement(By.cssSelector("input[data-test='postalCode']")).sendKeys("90210");
+        CheckoutPage checkoutPage = informationPage.addInformation("Luke", "Perry", "90210");
 
-        driver.findElement(By.cssSelector("input[data-test='continue']")).click();
-
-        Assertions.assertEquals("https://www.saucedemo.com/checkout-step-two.html",
-                driver.getCurrentUrl(),
-                "Information Submission Unsuccessful");
+        Assertions.assertTrue(checkoutPage.isOnPage(),"Information Submission Unsuccessful");
     }
 
     @Test
     public void completeCheckout() {
-        driver.get("https://www.saucedemo.com/");
-        driver.findElement(By.cssSelector("input[data-test='username']")).sendKeys("standard_user");
-        driver.findElement(By.cssSelector("input[data-test='password']")).sendKeys("secret_sauce");
-        driver.findElement(By.cssSelector("input[data-test='login-button']")).click();
-        driver.findElement(By.cssSelector("button[data-test='add-to-cart-sauce-labs-onesie']")).click();
-        driver.findElement(By.className("shopping_cart_link")).click();
-        driver.findElement(By.cssSelector("button[data-test='checkout']")).click();
-        driver.findElement(By.cssSelector("input[data-test='firstName']")).sendKeys("Luke");
-        driver.findElement(By.cssSelector("input[data-test='lastName']")).sendKeys("Perry");
-        driver.findElement(By.cssSelector("input[data-test='postalCode']")).sendKeys("90210");
-        driver.findElement(By.cssSelector("input[data-test='continue']")).click();
+        login();
+        InformationPage informationPage = goToCheckoutWithItem();
+        CheckoutPage checkoutPage = informationPage.addInformation("Luke", "Perry", "90210");
 
-        driver.findElement(By.cssSelector("button[data-test='finish']")).click();
+        FinishPage finish = checkoutPage.finish();
 
-        Assertions.assertEquals("https://www.saucedemo.com/checkout-complete.html", driver.getCurrentUrl());
-
-        Assertions.assertTrue(driver.findElement(By.className("complete-text")).isDisplayed());
+        Assertions.assertTrue(finish.isOnPage());
+        Assertions.assertTrue(finish.isComplete());
     }
 }
