@@ -1,5 +1,6 @@
 package test.java.com.titusfortner.deep_dive;
 
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -10,6 +11,8 @@ public class BaseTestChrome extends BaseTest {
 
     protected ChromeOptions getOptions() {
         chromeOptions.addExtensions(new File("src/test/resources/SelectorsHub.crx"));
+        chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
+
         return chromeOptions;
     }
 
