@@ -1,9 +1,12 @@
 package test.java.com.titusfortner.deep_dive.demo.data;
 
+import net.datafaker.Faker;
+
 public class Person {
-    private String firstName;
-    private String lastName;
-    private String postalCode;
+    private final Faker faker = new Faker();
+    private String firstName = faker.name().firstName();
+    private String lastName = faker.name().lastName();
+    private String postalCode = faker.address().zipCode();
 
     public String getFirstName() {
         return firstName;

@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import test.java.com.titusfortner.deep_dive.demo.data.Person;
 
 import java.util.List;
 import java.util.function.Function;
@@ -21,10 +22,14 @@ public class InformationPage extends BasePage {
         super(driver);
     }
 
-    public void addInformationSuccessfully(String firstName, String lastName, String postalCode) {
-        driver.findElement(firstNameElement).sendKeys(firstName);
-        driver.findElement(lastNameElement).sendKeys(lastName);
-        driver.findElement(postalCodeElement).sendKeys(postalCode);
+    public void addInformationSuccessfully() {
+        addInformationSuccessfully(new Person());
+    }
+
+    public void addInformationSuccessfully(Person person) {
+        driver.findElement(firstNameElement).sendKeys(person.getFirstName());
+        driver.findElement(lastNameElement).sendKeys(person.getLastName());
+        driver.findElement(postalCodeElement).sendKeys(person.getPostalCode());
         driver.findElement(continueButton).click();
 
         try {
