@@ -18,7 +18,7 @@ public class CartTest extends BaseTestChrome {
 
     public void login() {
         HomePage homePage = HomePage.visit(driver);
-        homePage.loginSuccessfully("standard_user", "secret_sauce");
+        homePage.loginSuccessfully();
     }
 
     @Test

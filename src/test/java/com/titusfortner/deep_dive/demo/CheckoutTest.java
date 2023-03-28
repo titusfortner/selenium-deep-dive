@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import test.java.com.titusfortner.deep_dive.BaseTestChrome;
 import test.java.com.titusfortner.deep_dive.demo.pages.CartPage;
 import test.java.com.titusfortner.deep_dive.demo.pages.CheckoutPage;
-import test.java.com.titusfortner.deep_dive.demo.pages.FinishPage;
 import test.java.com.titusfortner.deep_dive.demo.pages.HomePage;
 import test.java.com.titusfortner.deep_dive.demo.pages.InformationPage;
 import test.java.com.titusfortner.deep_dive.demo.pages.InventoryPage;
@@ -20,7 +19,7 @@ public class CheckoutTest extends BaseTestChrome {
 
     public void login() {
         HomePage homePage = HomePage.visit(driver);
-        homePage.loginSuccessfully("standard_user", "secret_sauce");
+        homePage.loginSuccessfully();
     }
 
     public void goToCheckoutWithItem() {
