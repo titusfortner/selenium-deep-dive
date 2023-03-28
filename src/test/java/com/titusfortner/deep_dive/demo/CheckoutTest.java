@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import test.java.com.titusfortner.deep_dive.BaseTestChrome;
+import test.java.com.titusfortner.deep_dive.demo.data.Person;
 import test.java.com.titusfortner.deep_dive.demo.pages.CartPage;
 import test.java.com.titusfortner.deep_dive.demo.pages.CheckoutPage;
 import test.java.com.titusfortner.deep_dive.demo.pages.HomePage;
@@ -37,7 +38,7 @@ public class CheckoutTest extends BaseTestChrome {
         InformationPage informationPage = new InformationPage(driver);
 
         Assertions.assertDoesNotThrow(() -> {
-            informationPage.addInformationSuccessfully("Luke", "Perry", "90210");
+            Assertions.assertDoesNotThrow(() -> informationPage.addInformationSuccessfully(new Person()));
         });
     }
 
@@ -46,7 +47,7 @@ public class CheckoutTest extends BaseTestChrome {
         login();
         goToCheckoutWithItem();
         InformationPage informationPage = new InformationPage(driver);
-        informationPage.addInformationSuccessfully("Luke", "Perry", "90210");
+        informationPage.addInformationSuccessfully();
 
         Assertions.assertDoesNotThrow(new CheckoutPage(driver)::finishSuccessfully);
     }
