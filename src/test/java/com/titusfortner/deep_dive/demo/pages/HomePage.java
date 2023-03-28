@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import test.java.com.titusfortner.deep_dive.demo.data.User;
 
 import java.util.List;
 import java.util.function.Function;
@@ -26,8 +27,8 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
-    public void loginUnsuccessfully(String username, String password) {
-        login(username, password);
+    public void loginUnsuccessfully(User user) {
+        login(user);
 
         try {
             wait.until((Function<WebDriver, Object>) driver -> !driver.findElements(errorElement).isEmpty());
@@ -37,8 +38,12 @@ public class HomePage extends BasePage {
         }
     }
 
-    public void loginSuccessfully(String username, String password) {
-        login(username, password);
+    public void loginSuccessfully() {
+        loginSuccessfully(User.valid());
+    }
+
+    public void loginSuccessfully(User user) {
+        login(user);
 
         try {
             wait.until((Function<WebDriver, Object>) driver -> !URL.equals(driver.getCurrentUrl()));
@@ -49,13 +54,9 @@ public class HomePage extends BasePage {
         }
     }
 
-    private void login(String username, String password) {
-        driver.findElement(usernameTextfield).sendKeys(username);
-        driver.findElement(passwordTextfield).sendKeys(password);
+    private void login(User user) {
+        driver.findElement(usernameTextfield).sendKeys(user.getUsername());
+        driver.findElement(passwordTextfield).sendKeys(user.getPassword());
         driver.findElement(loginButton).click();
-    }
-
-    public boolean isLockedOut() {
-        return driver.findElement(errorElement).getText().contains("Sorry, this user has been locked out");
     }
 }
