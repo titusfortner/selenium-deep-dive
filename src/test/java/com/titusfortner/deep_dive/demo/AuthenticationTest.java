@@ -15,7 +15,7 @@ public class AuthenticationTest extends BaseTestChrome {
 
     @Test
     public void signInUnsuccessful() {
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = HomePage.visit(driver);
 
         homePage.login("locked_out_user", "secret_sauce");
 
@@ -24,19 +24,20 @@ public class AuthenticationTest extends BaseTestChrome {
 
     @Test
     public void signInSuccessful() {
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = HomePage.visit(driver);
 
-        InventoryPage inventoryPage = homePage.login("standard_user", "secret_sauce");
+        homePage.login("standard_user", "secret_sauce");
 
+        InventoryPage inventoryPage = new InventoryPage(driver);
         Assertions.assertTrue(inventoryPage.isOnPage(), "Login Not Successful");
     }
 
     @Test
-    public void logout() throws InterruptedException {
-        HomePage homePage = new HomePage(driver);
-        InventoryPage inventoryPage = homePage.login("standard_user", "secret_sauce");
+    public void logout() {
+        HomePage homePage = HomePage.visit(driver);
+        homePage.login("standard_user", "secret_sauce");
 
-        inventoryPage.logOut();
+        new InventoryPage(driver).logOut();
 
         Assertions.assertTrue(homePage.isOnPage(), "Logout Not Successful");
     }
