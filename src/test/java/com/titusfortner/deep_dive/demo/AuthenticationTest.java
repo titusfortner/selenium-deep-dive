@@ -3,12 +3,11 @@ package test.java.com.titusfortner.deep_dive.demo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import test.java.com.titusfortner.deep_dive.BaseTestChrome;
 import test.java.com.titusfortner.deep_dive.demo.data.User;
 import test.java.com.titusfortner.deep_dive.demo.pages.HeaderSection;
 import test.java.com.titusfortner.deep_dive.demo.pages.HomePage;
 
-public class AuthenticationTest extends BaseTestChrome {
+public class AuthenticationTest extends BaseTestDemo {
     @BeforeEach
     public void setup() {
         startDriver();
@@ -16,7 +15,7 @@ public class AuthenticationTest extends BaseTestChrome {
 
     @Test
     public void signInUnsuccessful() {
-        HomePage homePage = HomePage.visit(driver);
+        HomePage homePage = HomePage.visit(browser);
         User lockedOutUser = User.lockedOut();
 
         Assertions.assertDoesNotThrow(() ->
@@ -26,7 +25,7 @@ public class AuthenticationTest extends BaseTestChrome {
 
     @Test
     public void signInSuccessful() {
-        HomePage homePage = HomePage.visit(driver);
+        HomePage homePage = HomePage.visit(browser);
         User validUser = User.valid();
 
         Assertions.assertDoesNotThrow(() ->
@@ -36,9 +35,9 @@ public class AuthenticationTest extends BaseTestChrome {
 
     @Test
     public void logout() {
-        HomePage homePage = HomePage.visit(driver);
+        HomePage homePage = HomePage.visit(browser);
         homePage.loginSuccessfully();
 
-        Assertions.assertDoesNotThrow(new HeaderSection(driver)::logOutSuccessfully);
+        Assertions.assertDoesNotThrow(new HeaderSection(browser)::logOutSuccessfully);
     }
 }
