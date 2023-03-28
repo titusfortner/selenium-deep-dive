@@ -12,19 +12,20 @@ public class HomePage {
     private final By loginButton = By.cssSelector("input[data-test='login-button']");
     private final By errorElement = By.cssSelector("[data-test=error]");
 
-    public HomePage(WebDriver driver) {
-        this.driver = driver;
-        if (!isOnPage()) {
-            driver.get(URL);
-        }
+    public static HomePage visit(WebDriver driver) {
+        HomePage homePage = new HomePage(driver);
+        driver.get(URL);
+        return homePage;
     }
 
-    public InventoryPage login(String username, String password) {
+    public HomePage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public void login(String username, String password) {
         driver.findElement(usernameTextfield).sendKeys(username);
         driver.findElement(passwordTextfield).sendKeys(password);
         driver.findElement(loginButton).click();
-
-        return new InventoryPage(driver);
     }
 
     public boolean isLockedOut() {
