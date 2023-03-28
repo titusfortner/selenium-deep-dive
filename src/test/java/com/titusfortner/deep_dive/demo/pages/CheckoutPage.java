@@ -1,7 +1,10 @@
 package test.java.com.titusfortner.deep_dive.demo.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+
+import java.util.function.Function;
 
 public class CheckoutPage extends BasePage {
     public static final String URL = "https://www.saucedemo.com/checkout-step-two.html";
@@ -9,14 +12,18 @@ public class CheckoutPage extends BasePage {
     private final By finishButton = By.cssSelector("button[data-test='finish']");
 
     public CheckoutPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    public boolean isOnPage() {
-        return URL.equals(driver.getCurrentUrl());
-    }
-
-    public void finish() {
+    public void finishSuccessfully() {
         driver.findElement(finishButton).click();
+        try {
+            wait.until((Function<WebDriver, Object>) driver -> !URL.equals(driver.getCurrentUrl()));
+        } catch (TimeoutException ex) {
+            FinishPage finishPage = new FinishPage(driver);
+            if (!finishPage.isComplete()) {
+                throw new PageValidationException("Checkout unsuccessful;");
+            }
+        }
     }
 }
