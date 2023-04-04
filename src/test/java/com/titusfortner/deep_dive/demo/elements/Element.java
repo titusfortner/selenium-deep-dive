@@ -11,16 +11,28 @@ public class Element {
     private final By locator;
     private final WebDriverWait wait;
     private final SearchContext context;
+    private final WebDriver driver;
     private WebElement cachedElement;
     private boolean located = false;
 
-    public Element(WebDriver driver, By locator) {
+    public Element(WebDriver driver, SearchContext context, By locator) {
         this.locator = locator;
-        this.context = driver;
+        this.context = context;
+        this.driver = driver;
 
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         wait.ignoreAll(List.of(ElementNotInteractableException.class,
                 StaleElementReferenceException.class));
+    }
+
+    public Element getElement(By locator) {
+        locate();
+        return new Element(driver, cachedElement, locator);
+    }
+
+    public ElementList getElements(By locator) {
+        locate();
+        return new ElementList(driver, cachedElement, locator);
     }
 
     public boolean isDisplayed() {

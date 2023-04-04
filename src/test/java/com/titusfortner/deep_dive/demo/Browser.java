@@ -20,11 +20,11 @@ public class Browser {
     }
 
     public Element getElement(By locator) {
-        return new Element(driver, locator);
+        return new Element(driver, driver, locator);
     }
 
     public ElementList getElements(By locator) {
-        return new ElementList(driver, locator);
+        return new ElementList(driver, driver, locator);
     }
 
     public void quit() {

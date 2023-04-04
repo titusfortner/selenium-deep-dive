@@ -17,9 +17,9 @@ public class ElementList {
     private List<WebElement> cachedElements;
     private final WebDriverWait wait;
 
-    public ElementList(WebDriver driver, By locator) {
+    public ElementList(WebDriver driver, SearchContext context, By locator) {
         this.locator = locator;
-        this.context = driver;
+        this.context = context;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
     }
 
