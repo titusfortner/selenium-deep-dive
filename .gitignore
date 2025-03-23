@@ -30,3 +30,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Selenium ###
+/src/test/screenshots/*
