@@ -14,12 +14,19 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import java.time.Duration;
+
 public class TestBase {
   protected WebDriver driver;
 
   @BeforeAll
   public static void enableLogging() {
     SeleniumLogger.enable();
+  }
+
+  public void startPatientChrome(ChromeOptions options) {
+    options.setImplicitWaitTimeout(Duration.ofSeconds(2));
+    startChrome(options);
   }
 
   public void startChrome() {
