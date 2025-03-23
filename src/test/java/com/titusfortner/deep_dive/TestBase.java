@@ -51,6 +51,11 @@ public class TestBase {
     startFirefox(new FirefoxOptions());
   }
 
+  public void startPatientFirefox(FirefoxOptions options) {
+    options.setImplicitWaitTimeout(Duration.ofSeconds(2));
+    startFirefox(options);
+  }
+
   public void startFirefox(FirefoxOptions options) {
     GeckoDriverLogger.enable();
     driver = new FirefoxDriver(options);
