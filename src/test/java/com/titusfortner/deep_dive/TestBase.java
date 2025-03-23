@@ -63,8 +63,10 @@ public class TestBase {
 
   @AfterEach
   public void quitDriver() {
-    if (driver != null) {
+    try {
       driver.quit();
+    } catch (Exception e) {
+      // quit gracefully if there's an issue with the driver
     }
   }
 }
