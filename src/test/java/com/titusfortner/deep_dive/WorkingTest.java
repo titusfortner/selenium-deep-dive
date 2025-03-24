@@ -1,45 +1,21 @@
 package com.titusfortner.deep_dive;
 
-import com.titusfortner.logging.ChromeDriverLogger;
-import com.titusfortner.logging.EdgeDriverLogger;
-import com.titusfortner.logging.GeckoDriverLogger;
-import com.titusfortner.logging.SeleniumLogger;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class WorkingTest {
-  /** Turn on logging for Selenium for all tests in this class */
-  @BeforeAll
-  public static void enableLogging() {
-    SeleniumLogger.enable();
-  }
-
+public class WorkingTest extends TestBase {
   /** Verify that Selenium can drive each of these browsers */
   @Test
   public void validateChrome() {
-    ChromeDriverLogger.enable();
-    WebDriver driver = new ChromeDriver();
-
-    driver.quit();
+    startChrome();
   }
 
   @Test
   public void validateFirefox() {
-    GeckoDriverLogger.enable();
-    WebDriver driver = new FirefoxDriver();
-
-    driver.quit();
+    startFirefox();
   }
 
   @Test
   public void validateEdge() {
-    EdgeDriverLogger.enable();
-    WebDriver driver = new EdgeDriver();
-
-    driver.quit();
+    startEdge();
   }
 }
