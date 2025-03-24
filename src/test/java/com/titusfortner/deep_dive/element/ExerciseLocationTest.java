@@ -17,16 +17,16 @@ public class ExerciseLocationTest extends TestBase {
   public void locateZipCodeField() {
     driver.get("https://www.saucedemo.com/v1/checkout-step-one.html");
 
-    String cssDescendant = "";
-    String cssDirectChild = "";
-    String cssLastChild = "";
-    String cssChildFromEnd = "";
-    String cssChildFromBeginning = "";
-    String cssAttributeStartsWith = "";
-    String cssAttributeEndsWith = "";
-    String cssAttributeContains = "";
-    String cssNextSibling = "";
-    String cssSubsequentSibling = "";
+    String cssDescendant = "#checkout_info_container #postal-code";
+    String cssDirectChild = ".checkout_info > #postal-code";
+    String cssLastChild = "input:last-child";
+    String cssChildFromEnd = "input:nth-last-child(1)";
+    String cssChildFromBeginning = "input:nth-child(3)";
+    String cssAttributeStartsWith = "[data-test^=post]";
+    String cssAttributeEndsWith = "[data-test$=ode]";
+    String cssAttributeContains = "[data-test*=alC]";
+    String cssNextSibling = "[data-test=lastName] + [data-test=postalCode]";
+    String cssSubsequentSibling = "[data-test=firstName] ~ [data-test=postalCode]";
 
     // IGNORE THE DETAILS OF THE ASSERTIONS BELOW
     // ALL YOU NEED TO KNOW IS THAT IF YOU RUN THIS TEST
