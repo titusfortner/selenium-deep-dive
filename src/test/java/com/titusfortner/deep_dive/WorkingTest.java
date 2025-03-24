@@ -1,5 +1,8 @@
 package com.titusfortner.deep_dive;
 
+import com.titusfortner.logging.ChromeDriverLogger;
+import com.titusfortner.logging.EdgeDriverLogger;
+import com.titusfortner.logging.GeckoDriverLogger;
 import com.titusfortner.logging.SeleniumLogger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,7 @@ public class WorkingTest {
   /** Verify that Selenium can drive each of these browsers */
   @Test
   public void validateChrome() {
+    ChromeDriverLogger.enable();
     WebDriver driver = new ChromeDriver();
 
     driver.quit();
@@ -25,6 +29,7 @@ public class WorkingTest {
 
   @Test
   public void validateFirefox() {
+    GeckoDriverLogger.enable();
     WebDriver driver = new FirefoxDriver();
 
     driver.quit();
@@ -32,6 +37,7 @@ public class WorkingTest {
 
   @Test
   public void validateEdge() {
+    EdgeDriverLogger.enable();
     WebDriver driver = new EdgeDriver();
 
     driver.quit();
