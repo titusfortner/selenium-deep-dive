@@ -1,0 +1,5 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Pins a machine-specific JDK name; pom.xml is the source of truth for Java version
+/misc.xml
